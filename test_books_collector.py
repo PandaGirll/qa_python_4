@@ -14,7 +14,6 @@ class TestBooksCollector:
         # добавляем вторую книгу
         books_collector.add_new_book('Что делать, если ваш кот хочет вас убить')
         books_collector.add_new_book('Гордость и предубеждение')
-        # books_collector.add_new_book('Что делать?') # строка для проверки работы теста и сообщения об ошибке
 
         # проверяем, что обе книги были добавлены
         assert len(books_collector.books_genre) == 2, f'Ошибка добавления книг, {len(books_collector.books_genre)}!= 2'

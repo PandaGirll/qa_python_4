@@ -13,6 +13,7 @@ class TestBooksCollector:
     def test_add_new_book_add_two_books(self, books_collector):
         # добавляем вторую книгу
         books_collector.add_new_book('Что делать, если ваш кот хочет вас убить')
+        books_collector.add_new_book('Гордость и предубеждение')
         # books_collector.add_new_book('Что делать?') # строка для проверки работы теста и сообщения об ошибке
 
         # проверяем, что обе книги были добавлены
@@ -49,14 +50,10 @@ class TestBooksCollector:
         if genre in books_collector.genre_age_rating:
             assert book_name not in children_books, \
                 f'Ошибка, книга "{book_name}" не подходит детям и не должна быть в списке.'
-            # assert book_name in children_books, f'Ошибка, книга "{book_name}" подходит детям и должна быть в списке.'
-            # строка для проверки работы теста и сообщения об ошибке
 
     # Проверяем метод add_new_book, у новой добавленной книги нет никакого жанра
-    def test_add_new_book_added_without_genre(self, books_collector):
-
-        # books_collector.set_book_genre('Гордость и предубеждение', 'Ужасы')
-        # строка для проверки работы теста и сообщения об ошибке
+    def test_add_new_book_added_without_genres(elf, books_collector):
+        books_collector.add_new_book('Гордость и предубеждение')
 
         # Проверяем, что для добавленной книги не установлен жанр (пустая строка)
         assert books_collector.books_genre.get(
@@ -78,10 +75,12 @@ class TestBooksCollector:
         books_collector.add_new_book('Книга с очень длинным названием, которое не должно добавляться')
 
         # проверяем, что книга не была добавлена
-        assert len(books_collector.books_genre) == 1, f'Ошибка добавления книги с длинным названием'
+        assert len(books_collector.books_genre) == 0, f'Ошибка добавления книги с длинным названием'
 
     # Проверяем метод set_book_genre, нельзя установить книге несуществующий жанр
     def test_set_book_genre_with_unknown_genre(self, books_collector):
+        # Добавляем книгу
+        books_collector.add_new_book('Гордость и предубеждение')
         # Устанавливаем книге несуществующий жанр
         books_collector.set_book_genre('Гордость и предубеждение', 'Фэнтези')
 
@@ -100,13 +99,12 @@ class TestBooksCollector:
 
     # Проверяем метод get_book_genre, вывод жанра книги по её имени
     def test_get_book_genre_add_one_book_comedy(self, books_collector):
+        # добавляем книгу
+        books_collector.add_new_book('Гордость и предубеждение')
         # создаём переменную с ожидаемым результатом
         expected_result = 'Комедии'
         # присваиваем книге жанр с помощью переменной с ожидаемым результатом
         books_collector.set_book_genre('Гордость и предубеждение', expected_result)
-
-        # строка для проверки работы теста и сообщения об ошибке
-        # books_collector.set_book_genre('Гордость и предубеждение', 'Ужасы')
 
         # создаём переменную с фактическим результатом
         fact_result = books_collector.get_book_genre('Гордость и предубеждение')
@@ -173,6 +171,8 @@ class TestBooksCollector:
 
     #    Проверяем метод add_book_in_favorites, успешное добавление книги в избранное
     def test_add_book_in_favorites_success(self, books_collector):
+        # добавляем книгу
+        books_collector.add_new_book('Гордость и предубеждение')
         # Устанавливаем жанр книги, чтобы обеспечить её наличие в books_genre
         books_collector.set_book_genre('Гордость и предубеждение', 'Комедии')
         # добавляем книгу в Избранное
@@ -183,6 +183,8 @@ class TestBooksCollector:
 
     #  Проверяем метод add_book_in_favorites, неуспешное повторное добавление книги в избранное
     def test_add_book_in_favorites_twice(self, books_collector):
+        # добавляем книгу
+        books_collector.add_new_book('Гордость и предубеждение')
         # Устанавливаем жанр книги, чтобы обеспечить её наличие в books_genre
         books_collector.set_book_genre('Гордость и предубеждение', 'Комедии')
         # Добавляем книгу в избранное впервые
@@ -207,6 +209,8 @@ class TestBooksCollector:
 
     # Проверяем метод delete_book_from_favorites, успешное удаление ранее добавленной книги
     def test_delete_book_from_favorites_success(self, books_collector):
+        # добавляем книгу
+        books_collector.add_new_book('Гордость и предубеждение')
         # Устанавливаем жанр книги, чтобы обеспечить её наличие в books_genre
         books_collector.set_book_genre('Гордость и предубеждение', 'Комедии')
         # Добавляем книгу в избранное

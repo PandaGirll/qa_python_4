@@ -19,26 +19,22 @@ class TestBooksCollector:
         # проверяем, что обе книги были добавлены
         assert len(books_collector.books_genre) == 2, f'Ошибка добавления книг, {len(books_collector.books_genre)}!= 2'
 
-    # Проверяем метод get_books_for_children, книги с неподходящим рейтингом отсутствуют в списке книг для детей
+    # Проверяем метод get_books_for_children, книги с подходящим рейтингом присутствуют в списке книг для детей
 
     @pytest.mark.parametrize(
         'book_name, genre',
         [
             ('Книга Фантастики', 'Фантастика'),
-            ('Книга Ужасов', 'Ужасы'),
-            ('Детективная Книга', 'Детективы'),
             ('Книга, по которой сняли Мультик', 'Мультфильмы'),
             ('Комедийная Книга', 'Комедии'),
         ],
         ids=[
             'Fantastic book',
-            'Horror book, Not suitable for children',
-            'Detective book, Not suitable for children',
             'Cartoon book',
             'Comedy book',
         ]
     )
-    def test_get_books_for_children_excludes_not_suitable_books(self, books_collector, book_name, genre):
+    def test_get_books_for_children_includes_suitable_books(self, books_collector, book_name, genre):
         # Добавляем книги
         books_collector.add_new_book(book_name)
         # Устанавливаем книгам жанры
@@ -46,10 +42,34 @@ class TestBooksCollector:
         # Получаем книги, подходящие детям
         children_books = books_collector.get_books_for_children()
 
-        # Проверяем, что в списке только книги, подходящие детям
-        if genre in books_collector.genre_age_rating:
-            assert book_name not in children_books, \
-                f'Ошибка, книга "{book_name}" не подходит детям и не должна быть в списке.'
+        # Проверяем, что в список попали книги, подходящие детям
+        assert book_name in children_books, \
+            f'Ошибка, книга "{book_name}" подходит детям и должна быть в списке.'
+
+    # Проверяем метод get_books_for_children, книги с неподходящим рейтингом отсутствуют в списке книг для детей
+
+    @pytest.mark.parametrize(
+        'book_name, genre',
+        [
+            ('Книга Ужасов', 'Ужасы'),
+            ('Книга с закрученным сюжетом', 'Детективы'),
+        ],
+        ids=[
+            'Horror book',
+            'Detectiv book',
+        ]
+    )
+    def test_get_books_for_children_includes_suitable_books(self, books_collector, book_name, genre):
+        # Добавляем книги
+        books_collector.add_new_book(book_name)
+        # Устанавливаем книгам жанры
+        books_collector.set_book_genre(book_name, genre)
+        # Получаем книги, подходящие детям
+        children_books = books_collector.get_books_for_children()
+
+        # Проверяем, что в список не попали книги, подходящие детям
+        assert book_name not in children_books, \
+            f'Ошибка, книга "{book_name}" не подходит детям и не должна быть в списке.'
 
     # Проверяем метод add_new_book, у новой добавленной книги нет никакого жанра
     def test_add_new_book_added_without_genres(elf, books_collector):

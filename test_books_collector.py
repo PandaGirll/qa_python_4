@@ -72,7 +72,8 @@ class TestBooksCollector:
             f'Ошибка, книга "{book_name}" не подходит детям и не должна быть в списке.'
 
     # Проверяем метод add_new_book, у новой добавленной книги нет никакого жанра
-    def test_add_new_book_added_without_genres(elf, books_collector):
+    def test_add_new_book_added_without_genres(self, books_collector):
+        # добавляем книгу. её больше нет в фикстуре
         books_collector.add_new_book('Гордость и предубеждение')
 
         # Проверяем, что для добавленной книги не установлен жанр (пустая строка)

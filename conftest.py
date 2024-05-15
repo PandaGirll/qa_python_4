@@ -13,6 +13,4 @@ from main import BooksCollector
 def books_collector():
     # Создаем экземпляр класса
     collector = BooksCollector()
-    # Добавляем книгу по умолчанию
-    # collector.add_new_book('Гордость и предубеждение')
     return collector

@@ -243,20 +243,16 @@ class TestBooksCollector:
 
     # Проверяем метод get_list_of_favorites_books, получение списка избранных книг
     def test_get_list_of_favorites_books(self, books_collector):
-        # Добавляем три книги в избранное
-        books_with_genres = {
-            'Книга Фантастики': 'Фантастика',
-            'Книга Ужасов': 'Ужасы',
-            'Детективная Книга': 'Детективы',
-        }
-        for book, genre in books_with_genres.items():
-            books_collector.add_new_book(book)
-            books_collector.set_book_genre(book, genre)
-            books_collector.add_book_in_favorites(book)
+        # Добавляем книгу, устанавливаем её жанр
+        books_collector.add_new_book('Книга Фантастики')
+        books_collector.set_book_genre('Книга Фантастики', 'Фантастика')
+        # Добавляем книгу в избранное
+        books_collector.add_book_in_favorites('Книга Фантастики')
 
-        # Получаем текущий список избранных книг
+        # Ожидаемый список избранных книг
+        expected_favorite_books = ['Книга Фантастики']
+        # Фактический список избранных книг
         favorite_books = books_collector.get_list_of_favorites_books()
 
-        # Проверяем, что все добавленные книги есть в избранном
-        for book in books_with_genres:
-            assert book in favorite_books, f'Книга "{book}" должна быть в избранном'
+        # Сравниваем списки
+        assert favorite_books == expected_favorite_books, f'Ошибка получения списка избранных книг.'

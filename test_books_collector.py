@@ -72,7 +72,7 @@ class TestBooksCollector:
 
     # Проверяем метод add_new_book, у новой добавленной книги нет никакого жанра
     def test_add_new_book_added_without_genres(self, books_collector):
-        # добавляем книгу. её больше нет в фикстуре
+        # Добавляем книгу, её больше нет в фикстуре
         books_collector.add_new_book('Гордость и предубеждение')
 
         # Проверяем, что для добавленной книги не установлен жанр (пустая строка)
@@ -137,28 +137,18 @@ class TestBooksCollector:
     def test_get_books_with_specific_genre_add_tree_detective(self):
         # создаем экземпляр (объект) класса BooksCollector без использования фикстуры
         collector = BooksCollector()
-        # создаём переменную со списком книг и жанров
-        books_with_genres = [
-            ('Книга Детективов', 'Детективы'),
-            ('Книга Ужасов', 'Ужасы'),
-            ('Детективная Книга', 'Детективы'),
-            ('Очень интересная книга', 'Детективы'),
-            ('Комедийная Книга', 'Комедии'),
-        ]
 
-        # Добавляем книги и устанавливаем их жанры
-        for book_name, genre in books_with_genres:
-            collector.add_new_book(book_name)
-            collector.set_book_genre(book_name, genre)
+        # Добавляем книгу и устанавливаем жанр
+        collector.add_new_book('Книга Детективов')
+        collector.set_book_genre('Книга Детективов', 'Детективы')
 
-        # Делаем проверку для жанра 'Детективы'. Получаем ожидаемый список книг жанра 'Детективы'
-        expected_detective_books = ['Книга Детективов', 'Детективная Книга', 'Очень интересная книга']
-        # Получаем фактический список книг жанра 'Детективы'
+        # Ожидаемый список книг жанра 'Детективы'
+        expected_detective_books = ['Книга Детективов']
+        # Фактический список книг жанра 'Детективы'
         detective_books = collector.get_books_with_specific_genre('Детективы')
 
-        # Проверяем, что все книги жанра 'Детективы' присутствуют в полученном списке
-        for book in expected_detective_books:
-            assert book in detective_books, f'Книга "{book}" должна быть в списке детективов.'
+        # Сравниваем списки
+        assert detective_books == expected_detective_books, f'Ошибка получения книг определённого жанра.'
 
     # Проверяем метод get_books_with_specific_genre, вывод пустого списка книг, если нет подходящих книг
     def test_get_books_with_specific_genre_empty_books_genre(self, books_collector):
